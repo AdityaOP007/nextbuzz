@@ -1,341 +1,580 @@
-NextBuzz — Complete Run Commands (Any Machine)
-Prerequisites (install once per machine)
-Tool	Version	Download
-Node.js
-18+
-https://nodejs.org
-npm
-comes with Node
-—
-Docker Desktop
-latest (for DB)
-https://docker.com/products/docker-desktop
-Git
-latest
-https://git-scm.com
+# 🎉 NextBuzz — Events That Move You
+
+NextBuzz is a full-stack Event Discovery and Ticket Booking Platform built using **Next.js 15**, **Express.js**, **PostgreSQL**, **Prisma ORM**, and **Tailwind CSS**.
+
+Users can discover events, book tickets, manage bookings, save carts, and explore event locations through an interactive map experience.
+
+---
+
+# 🚀 Features
+
+## User Features
+
+* User Registration & Login
+* JWT Authentication
+* Event Discovery
+* Event Search & Filtering
+* Event Details Page
+* Ticket Booking
+* Booking History
+* Cart Management
+* User Profile Management
+* Interactive Maps & Routing
+* Cloudinary Image Uploads
+
+---
+
+## Admin Features
+
+* Event Management
+* Event CRUD Operations
+* Featured Events
+* Seat Availability Management
+* Booking Monitoring
+
+---
+
+# 🏗️ Tech Stack
+
+## Frontend
+
+* Next.js 15
+* React
+* Tailwind CSS
+* ShadCN UI
+* Axios
+* React Hook Form
+* Zod Validation
+
+## Backend
+
+* Express.js
+* TypeScript
+* Prisma ORM
+* JWT Authentication
+* bcrypt Password Hashing
+
+## Database
+
+* PostgreSQL
+
+## Storage
+
+* Cloudinary
+
+## Maps
+
+* Leaflet.js
+* Leaflet Routing Machine
+
+## DevOps
+
+* Docker
+* Docker Compose
+
+---
+
+# 📁 Project Structure
+
+```text
+NextBuzz/
+├── frontend/
+│   ├── app/
+│   ├── components/
+│   ├── hooks/
+│   ├── services/
+│   ├── lib/
+│   ├── public/
+│   └── types/
+│
+├── backend/
+│   ├── prisma/
+│   │   ├── schema.prisma
+│   │   ├── migrations/
+│   │   └── seed.ts
+│   │
+│   ├── src/
+│   │   ├── controllers/
+│   │   ├── routes/
+│   │   ├── middleware/
+│   │   ├── services/
+│   │   ├── validators/
+│   │   ├── db/
+│   │   └── config/
+│   │
+│   ├── sql/
+│   │   ├── init-database.sql
+│   │   ├── useful-queries.sql
+│   │   └── debug-queries.sql
+│   │
+│   └── .env
+│
+├── docker-compose.yml
+├── docs/
+└── README.md
+```
+
+---
+
+# 🗄️ Database Schema
+
+## Tables
+
+### Users
+
+```sql
+users
+```
+
+Stores:
+
+* User profile information
+* Authentication details
+
+### Events
+
+```sql
+events
+```
+
+Stores:
+
+* Event details
+* Venue
+* Pricing
+* Seat availability
+
+### Bookings
+
+```sql
+bookings
+```
+
+Stores:
+
+* Ticket bookings
+* Booking history
+* User-event relationship
+
+### Cart Items
+
+```sql
+cart_items
+```
+
+Stores:
+
+* User cart data
+* Temporary ticket selections
+
+---
+
+# 🔗 Entity Relationships
+
+```text
+Users
+ ├── Bookings
+ └── Cart Items
+
+Events
+ ├── Bookings
+ └── Cart Items
+```
+
+---
+
+# 🐳 Database Setup
+
+## Docker (Recommended)
+
+From project root:
+
+```bash
+docker compose up -d
+```
+
 Verify:
 
-node -v
-npm -v
-docker -v
-git -v
-1) First-time setup (any new machine)
-Step A — Get the project
-git clone <your-repo-url> NextBuzz
-cd NextBuzz
-Or copy the project folder to the new machine, then:
-
-cd NextBuzz
-Step B — Start PostgreSQL (choose one option)
-Option 1: Docker (recommended — same on all machines)
-# From project root (NextBuzz/)
-docker compose up -d
-Check database is healthy:
-
+```bash
 docker ps
 docker logs nextbuzz-postgres
-Database details:
+```
 
-Host: localhost (or machine IP if remote)
-Port: 5432
-User: postgres
-Password: password
-Database: nextbuzz
-Option 2: Local PostgreSQL (without Docker)
-Mac/Linux:
+Database Configuration:
 
-# Ubuntu/Debian
-sudo apt install postgresql postgresql-contrib
-sudo systemctl start postgresql
-# macOS (Homebrew)
-brew install postgresql@16
-brew services start postgresql@16
-Windows: Install from https://www.postgresql.org/download/windows/
+| Field    | Value     |
+| -------- | --------- |
+| Host     | localhost |
+| Port     | 5432      |
+| Username | postgres  |
+| Password | password  |
+| Database | nextbuzz  |
 
-Then create the database:
+---
 
-psql -U postgres -c "CREATE DATABASE nextbuzz;"
-Or run the SQL file in your DB tool:
+# ⚙️ Backend Setup
 
-backend/sql/init-database.sql
-Step C — Backend setup
+```bash
 cd backend
-Mac/Linux:
+```
 
+Copy environment file:
+
+### Linux / Mac
+
+```bash
 cp .env.example .env
-Windows (PowerShell):
+```
 
+### Windows
+
+```powershell
 Copy-Item .env.example .env
-Edit backend/.env:
+```
 
+Update `.env`
+
+```env
 DATABASE_URL="postgresql://postgres:password@localhost:5432/nextbuzz?schema=public"
+
 JWT_SECRET="your-super-secret-jwt-key-change-in-production"
+
 JWT_EXPIRES_IN="7d"
+
 PORT=4000
+
 CORS_ORIGIN="http://localhost:3000"
-Install, migrate, seed, run:
+```
 
+Install dependencies:
+
+```bash
 npm install
+```
+
+Generate Prisma Client:
+
+```bash
 npx prisma generate
+```
+
+Run migrations:
+
+```bash
 npx prisma migrate dev
+```
+
+Seed database:
+
+```bash
 npm run seed
+```
+
+Start backend:
+
+```bash
 npm run dev
-Backend runs at: http://localhost:4000
+```
 
-Verify:
+Backend URL:
 
-curl http://localhost:4000/api/health
-curl http://localhost:4000/api/events
-curl http://localhost:4000/api/debug/db-status
-Windows (PowerShell):
+```text
+http://localhost:4000
+```
 
-Invoke-RestMethod http://localhost:4000/api/health
-Invoke-RestMethod http://localhost:4000/api/events
-Step D — Frontend setup (new terminal)
+---
+
+# 🎨 Frontend Setup
+
+Open new terminal:
+
+```bash
 cd frontend
-Mac/Linux:
+```
 
+Copy environment file:
+
+### Linux / Mac
+
+```bash
 cp .env.example .env.local
-Windows (PowerShell):
+```
 
+### Windows
+
+```powershell
 Copy-Item .env.example .env.local
-Edit frontend/.env.local:
+```
 
+Update:
+
+```env
 NEXT_PUBLIC_API_URL=http://localhost:4000/api
-Install and run:
+```
 
+Install dependencies:
+
+```bash
 npm install
+```
+
+Run frontend:
+
+```bash
 npm run dev
-Frontend runs at: http://localhost:3000
+```
 
-2) Daily dev commands (after first setup)
-Open 3 terminals:
+Frontend URL:
 
-Terminal 1 — Database (if using Docker):
+```text
+http://localhost:3000
+```
 
-cd NextBuzz
-docker compose up -d
-Terminal 2 — Backend:
+---
 
-cd NextBuzz/backend
-npm run dev
-Terminal 3 — Frontend:
+# 🔐 Demo Credentials
 
-cd NextBuzz/frontend
-npm run dev
-Open browser: http://localhost:3000
-
-Demo login:
-
+```text
 Email: demo@nextbuzz.in
 Password: Password123
-3) Running on different machines (split setup)
-Scenario A — Everything on one machine (default)
-Service	URL
-Frontend
-http://localhost:3000
-Backend
-http://localhost:4000
-Database
-localhost:5432
-No extra config needed beyond the steps above.
+```
 
-Scenario B — Backend + DB on Machine 1, Frontend on Machine 2
-Machine 1 (Server — IP example: 192.168.1.10):
+---
 
-cd NextBuzz
-docker compose up -d
-cd backend
-npm install
-npx prisma migrate dev
-npm run seed
-npm run dev
-Edit backend/.env on Machine 1:
+# 📡 API Endpoints
 
-DATABASE_URL="postgresql://postgres:password@localhost:5432/nextbuzz?schema=public"
-PORT=4000
-CORS_ORIGIN="http://192.168.1.20:3000"
-(192.168.1.20 = Machine 2's IP)
+## Authentication
 
-Machine 2 (Client — IP example: 192.168.1.20):
+```http
+POST /api/auth/register
+POST /api/auth/login
+GET  /api/auth/me
+PUT  /api/auth/profile
+```
 
-cd NextBuzz/frontend
-npm install
-Edit frontend/.env.local on Machine 2:
+---
 
-NEXT_PUBLIC_API_URL=http://192.168.1.10:4000/api
-npm run dev
-Open on Machine 2: http://localhost:3000 or http://192.168.1.20:3000
+## Events
 
-Scenario C — Remote database on a third machine
-If PostgreSQL runs on Machine 3 (192.168.1.30):
+```http
+GET    /api/events
+GET    /api/events/:id
+POST   /api/events
+PUT    /api/events/:id
+DELETE /api/events/:id
+```
 
-Machine 3 — Database:
+---
 
-docker compose up -d
-# OR install PostgreSQL and create database "nextbuzz"
-Machine 1 — Backend .env:
+## Bookings
 
-DATABASE_URL="postgresql://postgres:password@192.168.1.30:5432/nextbuzz?schema=public"
-CORS_ORIGIN="http://localhost:3000"
-cd backend
-npm install
-npx prisma migrate dev
-npm run seed
-npm run dev
-Machine 2 — Frontend .env.local:
+```http
+POST /api/bookings
+GET  /api/bookings
+GET  /api/bookings/:id
+```
 
-NEXT_PUBLIC_API_URL=http://192.168.1.10:4000/api
-4) Production commands
-Backend:
+---
 
-cd backend
-npm install
-npx prisma generate
-npx prisma migrate deploy
-npm run build
-npm start
-Frontend:
+## Cart
 
-cd frontend
-npm install
-npm run build
-npm start
-Production .env examples:
+```http
+GET    /api/cart
+POST   /api/cart/:eventId
+DELETE /api/cart/:eventId
+PUT    /api/cart/sync
+```
 
-backend/.env:
+---
 
-DATABASE_URL="postgresql://postgres:password@your-db-host:5432/nextbuzz?schema=public"
-JWT_SECRET="strong-random-secret-here"
-PORT=4000
-CORS_ORIGIN="https://your-frontend-domain.com"
-frontend/.env.local:
+## Uploads
 
-NEXT_PUBLIC_API_URL=https://your-api-domain.com/api
-5) Useful database commands
-Check data in PostgreSQL (Docker):
+```http
+POST /api/upload
+```
 
+---
+
+# 🧪 Health Check
+
+```bash
+curl http://localhost:4000/api/health
+```
+
+Expected:
+
+```json
+{
+  "success": true
+}
+```
+
+---
+
+# 📊 Database Verification
+
+Connect:
+
+```bash
 docker exec -it nextbuzz-postgres psql -U postgres -d nextbuzz
-Inside psql:
+```
 
+Run:
+
+```sql
 SELECT current_database();
-SELECT COUNT(*) FROM events;
+
 SELECT COUNT(*) FROM users;
+
+SELECT COUNT(*) FROM events;
+
 SELECT COUNT(*) FROM bookings;
+
 SELECT COUNT(*) FROM cart_items;
+```
+
+Exit:
+
+```sql
 \q
-Re-seed database:
+```
 
-cd backend
-npm run seed
-Reset database (fresh start):
+---
 
+# 🔄 Reset Database
+
+```bash
 cd backend
+
 npx prisma migrate reset
+
 npm run seed
-Run debug SQL file (in DB tool like DBeaver/pgAdmin):
+```
 
-backend/sql/debug-queries.sql
-DB tool connection:
+---
 
-Field	Value
-Host
-127.0.0.1
-Port
-5432
-User
-postgres
-Password
-password
-Database
-nextbuzz
-6) Troubleshooting commands
-Port already in use:
+# 🧹 Troubleshooting
 
-Mac/Linux:
+## Port Already In Use
 
-lsof -i :3000
-lsof -i :4000
-kill -9 <PID>
-Windows (PowerShell):
+### Windows
 
+```powershell
 Get-NetTCPConnection -LocalPort 3000
+
+Get-NetTCPConnection -LocalPort 4000
+
 Stop-Process -Id <PID> -Force
-Clear frontend cache:
+```
 
-cd frontend
-rm -rf .next
-npm run dev
-Windows:
+### Mac / Linux
 
-cd frontend
+```bash
+lsof -i :3000
+
+lsof -i :4000
+
+kill -9 <PID>
+```
+
+---
+
+## Restart PostgreSQL
+
+```bash
+docker compose down
+
+docker compose up -d
+```
+
+---
+
+## Clear Frontend Cache
+
+### Windows
+
+```powershell
 Remove-Item -Recurse -Force .next
 npm run dev
-Restart Docker database:
+```
 
-cd NextBuzz
-docker compose down
-docker compose up -d
-Test API from command line:
+### Linux / Mac
 
-curl http://localhost:4000/api/health
-curl http://localhost:4000/api/events
-curl http://localhost:4000/api/debug/db-status
-E2E persistence test:
-
-cd backend
-npx tsx scripts/e2e-persistence-test.ts
-7) Quick reference — all npm scripts
-Location	Command	Purpose
-backend/
+```bash
+rm -rf .next
 npm run dev
-Start API (dev)
-backend/
-npm run build
-Build for production
-backend/
-npm start
-Run production API
-backend/
-npm run seed
-Load demo data
-backend/
-npm run db:migrate
-Run migrations
-backend/
-npm run db:generate
-Generate Prisma client
-frontend/
-npm run dev
-Start website (dev)
-frontend/
-npm run build
-Build for production
-frontend/
-npm start
-Run production site
-root
-docker compose up -d
-Start PostgreSQL
-root
-docker compose down
-Stop PostgreSQL
-8) Minimum command sequence (copy-paste)
-Full first-time setup on a fresh machine:
+```
 
-# 1. Database
-cd NextBuzz
-docker compose up -d
-# 2. Backend
+---
+
+# 📦 Production Build
+
+## Backend
+
+```bash
 cd backend
-cp .env.example .env          # Windows: Copy-Item .env.example .env
+
 npm install
-npx prisma migrate dev
-npm run seed
-npm run dev
-# 3. Frontend (new terminal)
+
+npx prisma generate
+
+npx prisma migrate deploy
+
+npm run build
+
+npm start
+```
+
+---
+
+## Frontend
+
+```bash
 cd frontend
-cp .env.example .env.local    # Windows: Copy-Item .env.example .env.local
+
 npm install
+
+npm run build
+
+npm start
+```
+
+---
+
+# 👨‍💻 Development Workflow
+
+Terminal 1:
+
+```bash
+docker compose up -d
+```
+
+Terminal 2:
+
+```bash
+cd backend
 npm run dev
-Then open http://localhost:3000 and sign in with demo@nextbuzz.in / Password123.
+```
+
+Terminal 3:
+
+```bash
+cd frontend
+npm run dev
+```
+
+Open:
+
+```text
+http://localhost:3000
+```
+
+---
+
+# 📄 License
+
+This project is licensed under the MIT License.
+
+---
+
+Made with ❤️ using Next.js, Express, PostgreSQL, Prisma and Docker.
