@@ -1,0 +1,75 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String    @id @default(uuid()) @db.Uuid
+  firstName    String    @map("first_name") @db.VarChar(100)
+  lastName     String?   @map("last_name") @db.VarChar(100)
+  email        String    @unique @db.VarChar(255)
+  phone        String?   @db.VarChar(20)
+  city         String?   @db.VarChar(100)
+  passwordHash String    @map("password_hash")
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+  bookings     Booking[]
+  cartItems    CartItem[]
+
+  @@map("users")
+}
+
+model Event {
+  id             String    @id @default(uuid()) @db.Uuid
+  title          String    @db.VarChar(255)
+  description    String?   @db.Text
+  category       String    @db.VarChar(100)
+  city           String    @db.VarChar(100)
+  venue          String    @db.VarChar(255)
+  latitude       Decimal?  @db.Decimal(10, 7)
+  longitude      Decimal?  @db.Decimal(10, 7)
+  eventDate      DateTime  @map("event_date") @db.Date
+  eventTime      DateTime  @map("event_time") @db.Time
+  price          Decimal   @default(0) @db.Decimal(10, 2)
+  capacity       Int       @default(100)
+  availableSeats Int       @map("available_seats")
+  imageUrl       String?   @map("image_url") @db.Text
+  featured       Boolean   @default(false)
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @updatedAt @map("updated_at")
+  bookings       Booking[]
+  cartItems      CartItem[]
+
+  @@map("events")
+}
+
+model Booking {
+  id            String   @id @default(uuid()) @db.Uuid
+  userId        String   @map("user_id") @db.Uuid
+  eventId       String   @map("event_id") @db.Uuid
+  quantity      Int
+  ticketType    String   @map("ticket_type") @db.VarChar(50)
+  totalPrice    Decimal  @map("total_price") @db.Decimal(10, 2)
+  bookingStatus String   @default("confirmed") @map("booking_status") @db.VarChar(50)
+  createdAt     DateTime @default(now()) @map("created_at")
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  event         Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@map("bookings")
+}
+
+model CartItem {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  eventId   String   @map("event_id") @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, eventId])
+  @@map("cart_items")
+}

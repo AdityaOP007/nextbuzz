@@ -1,0 +1,354 @@
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #110a00;
+  --bg2: #1c1000;
+  --bg3: #261600;
+  --card: #1f1100;
+  --border: rgba(255, 160, 40, 0.13);
+  --orange: #ff6b35;
+  --gold: #ffbb33;
+  --rose: #ff4d6d;
+  --purple: #9b5de5;
+  --teal: #00c9a7;
+  --white: #fff8ef;
+  --muted: #a88d6a;
+  --radius: 18px;
+  --r-sm: 10px;
+  --shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+  --ff-head: "Fraunces", Georgia, serif;
+  --ff-body: "Plus Jakarta Sans", sans-serif;
+}
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: var(--ff-body);
+    background: var(--bg);
+    color: var(--white);
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+}
+
+@layer components {
+  .logo {
+    font-family: var(--ff-head);
+    font-size: 1.6rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--gold), var(--orange));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -1px;
+  }
+
+  .logo span {
+    font-style: italic;
+  }
+
+  .btn-nav {
+    background: linear-gradient(135deg, var(--orange), #ff8c55);
+    color: #fff;
+    border: none;
+    padding: 9px 22px;
+    border-radius: 50px;
+    font-family: var(--ff-body);
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+
+  .btn-nav:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px rgba(255, 107, 53, 0.4);
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--orange), #ff8844);
+    color: #fff;
+    border: none;
+    padding: 14px 32px;
+    border-radius: 50px;
+    font-family: var(--ff-body);
+    font-weight: 800;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 36px rgba(255, 107, 53, 0.45);
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--white);
+    border: 1.5px solid var(--border);
+    padding: 14px 28px;
+    border-radius: 50px;
+    font-family: var(--ff-body);
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .btn-ghost:hover {
+    border-color: var(--orange);
+    background: rgba(255, 107, 53, 0.08);
+  }
+
+  .btn-full {
+    width: 100%;
+    background: linear-gradient(135deg, var(--orange), #ff8844);
+    color: #fff;
+    border: none;
+    padding: 15px;
+    border-radius: 14px;
+    font-family: var(--ff-body);
+    font-weight: 800;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: transform 0.15s, box-shadow 0.2s;
+  }
+
+  .btn-full:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 30px rgba(255, 107, 53, 0.4);
+  }
+
+  .btn-full:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .btn-search {
+    background: linear-gradient(135deg, var(--orange), #ff7744);
+    color: #fff;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-family: var(--ff-body);
+    font-weight: 700;
+    font-size: 0.88rem;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: transform 0.15s;
+  }
+
+  .btn-search:hover {
+    transform: scale(1.03);
+  }
+
+  .btn-ai {
+    background: var(--purple);
+    color: #fff;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 9px;
+    font-family: var(--ff-body);
+    font-weight: 700;
+    font-size: 0.82rem;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+
+  .btn-ai:hover {
+    opacity: 0.85;
+  }
+
+  .btn-book {
+    background: linear-gradient(135deg, var(--orange), #ff8844);
+    color: #fff;
+    border: none;
+    padding: 9px 20px;
+    border-radius: 50px;
+    font-family: var(--ff-body);
+    font-weight: 800;
+    font-size: 0.82rem;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s, background 0.3s;
+  }
+
+  .btn-book:hover {
+    transform: scale(1.04);
+    box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
+  }
+
+  .btn-book.added {
+    background: linear-gradient(135deg, var(--teal), #00a889);
+  }
+
+  .btn-whatsapp {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    background: #25d366;
+    color: #fff;
+    border: none;
+    padding: 14px;
+    border-radius: 14px;
+    font-family: var(--ff-body);
+    font-weight: 800;
+    font-size: 0.95rem;
+    cursor: pointer;
+    margin-top: 12px;
+    transition: transform 0.15s, box-shadow 0.2s;
+  }
+
+  .btn-whatsapp:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px rgba(37, 211, 102, 0.3);
+  }
+
+  .tag-music {
+    background: rgba(255, 77, 109, 0.9);
+    color: #fff;
+  }
+  .tag-food {
+    background: rgba(255, 187, 51, 0.9);
+    color: #110a00;
+  }
+  .tag-tech {
+    background: rgba(0, 201, 167, 0.9);
+    color: #110a00;
+  }
+  .tag-fitness {
+    background: rgba(155, 93, 229, 0.9);
+    color: #fff;
+  }
+  .tag-arts {
+    background: rgba(255, 107, 53, 0.9);
+    color: #fff;
+  }
+  .tag-comedy {
+    background: rgba(255, 220, 100, 0.9);
+    color: #110a00;
+  }
+
+  .overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(8px);
+    z-index: 1000;
+    display: none;
+    pointer-events: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .overlay.open {
+    display: flex;
+    pointer-events: auto;
+  }
+
+  .modal {
+    background: var(--bg2);
+    border: 1px solid rgba(255, 107, 53, 0.2);
+    border-radius: 24px;
+    width: 100%;
+    max-width: 520px;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    animation: slideUp 0.3s ease;
+  }
+
+  @keyframes slideUp {
+    from {
+      transform: translateY(30px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes toastIn {
+    from {
+      transform: translateX(100px);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes bounce {
+    0%,
+    60%,
+    100% {
+      transform: translateY(0);
+    }
+    30% {
+      transform: translateY(-8px);
+    }
+  }
+
+  .dot {
+    width: 6px;
+    height: 6px;
+    background: var(--orange);
+    border-radius: 50%;
+    animation: bounce 0.8s infinite;
+  }
+
+  .dot:nth-child(2) {
+    animation-delay: 0.15s;
+  }
+
+  .dot:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+}
+
+/* Leaflet */
+@import "leaflet/dist/leaflet.css";
+@import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
+
+.leaflet-container {
+  background: var(--bg3) !important;
+  border-radius: 14px;
+  z-index: 1;
+}
+
+.leaflet-routing-container {
+  display: none;
+}
